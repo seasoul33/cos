@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p><h3><a href="/horizontal_list">同事互評排行榜</a></h3></p>
+        <p><h3><a href="/upward_list">向上回饋排行榜</a></h3></p>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

@@ -1,0 +1,133 @@
+<!-- let's play socket.io and DOM here -->
+<!DOCTYPE html>
+<head>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<script>
+var socket = io.connect();
+
+socket.on("test", function(msg) {
+    //console.log(msg);
+});
+
+socket.on("account_manage", function(msg) {
+    var form = document.getElementById("form");
+
+    var input_delete_name = document.getElementById("delete_name");
+    input_delete_name.value = msg.name;
+
+    form.input_oldname.value = msg.name;
+
+    form.input_name.value = msg.name;
+    form.input_password.value = msg.password;
+    form.input_employeeno.value = msg.employeeno;
+    form.input_arrivedate.value = msg.arrivedate;
+    form.input_email.value = msg.email;
+    form.input_group.value = msg.group;
+});
+
+function retrieve(value) {
+    var form = document.getElementById('form');
+    var form_delete = document.getElementById('form_delete');
+    var caption_password = document.getElementById('caption_password');
+    if(value == <%- action.create %>) {
+        form.action.value = <%- action.create %>;
+        form.submit_button.value = 'Create'
+
+        form.input_name.value = '';
+        form.input_password.value = '';
+        form.input_password.required = true;
+        caption_password.innerHTML = '(Cannot be empty)';
+        form.input_employeeno.value = '';
+        form.input_arrivedate.value = '';
+        form.input_email.value = '';
+        form.input_group.value = form.input_group.options[0].value;
+
+        form_delete.style.display = 'none';
+    }
+    else {
+        form.action.value = <%- action.modify %>;
+        form.submit_button.value = 'Modify'
+        form.input_password.required = false;
+        caption_password.innerHTML = '(Left empty to keep original password)';
+
+        form_delete.style.display = '';
+        
+        socket.emit('account_manage', {name: value});
+    }
+
+    if(value == 'all') {
+        // not ready yet. Need to re-considering the layout.
+    }
+}
+</script>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Welcome to account management page.</p>
+        <br>
+
+        <select name="who" onchange="retrieve(this.value)">
+            <option value=<%- action.create %>>Create</option>
+            <!-- <option value="all">All</option> -->
+            <% for(var i=0;i<account.length;i++) { %>
+                <option value="<%= account[i] %>"><%= account[i] %></option>
+            <% } %>
+        </select>
+
+        <p><form id="form" action="/account_manage" method="post">
+            <input type="hidden" name="action" value=<%- action.create %>>
+            <input type="hidden" id="input_oldname" name="oldname" value="">
+            <table id="table">
+            <tr>
+                <td><h3 align="left">使用者名稱(name)</h3></td>
+                <td><input id="input_name" type="text" name="name"></td>
+            </tr>
+            <tr>
+                <td><h3 align="left">密碼(password)</h3></td>
+                <td><input id="input_password" type="password" name="password" required></td><td id="caption_password">(Cannot be empty)</td>
+            </tr>
+            <tr>
+                <td><h3 align="left">工號(employee #)</h3></td>
+                <td><input id="input_employeeno" type="text" name="employee_no"></td><td>(6 digits)</td>
+            </tr>
+            <tr>
+                <td><h3 align="left">報到時間(arrive date)</h3></td>
+                <td><input id="input_arrivedate" type="text" name="arrivedate"></td><td>(YYYY-MM-DD)</td>
+            </tr>
+            <tr>
+                <td><h3 align="left">EMAIL</h3></td>
+                <td><input id="input_email" type="text" name="email"></td>
+            </tr>
+            <tr>
+                <td><h3 align="left">群組(group)</h3></td>
+                <td><select id="input_group" name="group">
+                    <% for(var key in privelidge) { %>
+                    <option value=<%= privelidge[key] %>><%= key %></option>
+                    <% } %>
+                </td>
+            </tr>
+            </table>
+            <input id="submit_button" type="submit" value="Create">
+        </form>
+        <form id="form_delete" style="display:none" action="/account_manage" method="post">
+            <input type="hidden" name="action" value=<%- action.delete %>>
+            <input type="hidden" id="delete_name" type="text" name="name">
+            <input id="submit_button" type="submit" value="Delete">
+        </form>
+        </p>
+
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

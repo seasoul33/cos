@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %> system.</p>
+        <p>This system is used to help to build a Circle of Safety in our department.<br>
+        Please do your best to help the COS building.</p><br>
+        <% ErrMsg = typeof ErrMsg !== 'undefined' ? ErrMsg : ''; %>
+        <font color='red'><%= ErrMsg %></font>
+        <form action="/login" method="post">
+            <h3>Username:<input type="text" name=username></h3>
+            <h3>Password:<input type="password" name=password></h3>
+            <input id="submit_button" type="submit" value="登入">
+        </form>
+        <!-- <p>沒有帳號? <a href="/signup">註冊(sign up)</a></p> -->
+    </body>
+</html>

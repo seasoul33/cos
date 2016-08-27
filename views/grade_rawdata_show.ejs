@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<script>
+function grade_sort(gradeNumber) {
+    var layout='';
+    var table = document.getElementById("grade");
+    var q_list = <%- JSON.stringify(q_list) %>;
+    var result = <%- JSON.stringify(result) %>;
+    var sorted = result.sort(function(a,b){return b['g'+gradeNumber]-a['g'+gradeNumber];});
+
+    for(var i=0;i<result.length;i++) {
+        table.deleteRow(-1);
+    }
+
+    for(var i=0;i<result.length;i++) {
+        let row = table.insertRow(-1);
+        let cell = row.insertCell(-1);
+        cell.innerHTML = sorted[i].candidate + "  <button onclick=\"comment_show(\'" + sorted[i].candidate + "\')\">看評語</button>";
+        for(var j=1;j<q_list.length;j++) {
+            let cell = row.insertCell(-1);
+            cell.innerHTML = sorted[i]['g'+j];
+        }
+    }
+}
+
+function comment_show(candidate) {
+    // console.log(candidate);
+    document.getElementById("account_name").value = candidate;
+    document.getElementById("commentpostlink").submit();
+}
+</script>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <table border="1" id="grade">
+        	<tr class="title">
+        		<td class="question_title">Name</td>
+        		<% for(var i=1;i<q_list.length;i++) { %>
+        			<td><%= q_list[i] %><br><button onclick="grade_sort(<%= i %>)">sort</button></td>
+        		<% } %>
+        	</tr>
+        	<% for(var i=0;i<result.length;i++) { %>
+        		<tr>
+        		<td><%= result[i].candidate %>  <button onclick="comment_show('<%= result[i].candidate %>')">看評語</button></td>
+        		<% for(var j=1;j<q_list.length;j++) { %>
+        			<td><%= result[i]['g'+j] %></td>
+        		<% } %>
+        		</tr>
+        	<% } %>
+        </table>
+        <form action="/comment" id="commentpostlink" method="post">
+            <input type="hidden" id="account_name" name="account" value="">
+            <input type="hidden" name="write" value=0>
+        </form>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

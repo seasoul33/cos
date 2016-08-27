@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>This page is used to specify what result of upward grade to show.</p><br>
+        <form action="/upward_fullresult" method="post">
+            <p>
+            對象：
+            <select name="account">
+                <% if(account.length != 1) { %>
+                <option value="all">All</option>
+                <% } %>
+                <% for(var i=0;i<account.length;i++) { %>
+                    <option value="<%= account[i] %>"><%= account[i] %></option>
+                <% } %>
+            </select>
+            </p>
+
+            <p>
+            時段：
+            <table border="1">
+            <tr>
+                <td align="right">年</td>
+                <td align="right">季</td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="year">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=0;i<15;i++) { %>
+                            <option value="20<%= i+16 %>">20<%= i+16 %></option>
+                        <% } %>
+                    </select>
+                </td>
+                <td>
+                    <select name="quarter">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=1;i<5;i++) { %>
+                            <option value="<%= i %>">Q<%= i %></option>
+                        <% } %>
+                    </select>
+                </td>
+            </tr>
+            </table>
+            </p>
+
+            <input id="submit_button" type="submit" value="查詢">
+        </form>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

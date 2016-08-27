@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %> system.</p>
+        <p>This system is used to help to build a Circle of Safety in our department.<br>
+        Please do your best to help the COS building.</p><br>
+        <h2>Entrance:</h2>
+        <ul>
+            <!-- <li><a href="/topics"><h3>百無禁忌</h3></a></li><br> -->
+            <!-- <li><a href="/horizontal_give"><h3>同事互評</h3></a></li><br> -->
+            <li><a href="/upward_give"><h3>向上回饋</h3></a></li><br>
+            <li><a href="/comment"><h3>評語</h3></a></li><br>
+            <% if(isAdmin == true) { %>
+            <!-- <li><a href="/grade_rawdata_list"><h3>排行榜</h3></a></li><br> -->
+            <li><a href="/upward_result"><h3>向上回饋評分管理</h3></a></li><br>
+            <li><a href="/account_manage"><h3>帳戶管理</h3></a></li><br>
+            <% } else if(isLeader == true) { %>
+            <li><a href="/upward_fullresult"><h3>查詢向上回饋結果</h3></a></li><br>
+            <% } %>
+            <!-- <li><h3>OKR</h3></li><br> -->
+            <!-- <li><h3>考績</h3></li> -->
+
+        </ul>
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<% var action_default='評價' %>
+<% var action_alter='查詢' %>
+<script>
+function toggle(option) {
+    if(option == 1) {
+        document.getElementById("inputdiv").style.display = '';
+        document.getElementById("submit_button").value = "<%= action_default %>";
+    }
+    else if(option == 0) {
+        document.getElementById("inputdiv").style.display = 'none';
+        document.getElementById("submit_button").value = "<%= action_alter %>";
+    }
+}
+</script>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Give/Check a comment for a colleague...</p><br>
+        <form action="/comment" method="post">
+            <p>
+            請選擇對象：
+            <select name="account">
+                <% for(var i=0;i<account.length;i++) { %>
+                    <option value="<%= account[i] %>"><%= account[i] %></option>
+                <% } %>
+            </select>
+            <% if(isAdmin == true) { %>
+            <input type="radio" name="write" value=1 onclick="toggle(1)" checked><%= action_default %>
+            <input type="radio" name="write" value=0 onclick="toggle(0)"><%= action_alter %>
+            <% } else { %>
+            <input type="hidden" name="write" value=1>
+            <% } %>
+            </p>
+
+            <p>
+            時段：
+            <table border="1">
+            <tr>
+                <td align="right">年</td>
+                <td align="right">季</td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="year">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=0;i<15;i++) { %>
+                            <option value="20<%= i+16 %>">20<%= i+16 %></option>
+                        <% } %>
+                    </select>
+                </td>
+                <td>
+                    <select name="quarter">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=1;i<5;i++) { %>
+                            <option value="<%= i %>">Q<%= i %></option>
+                        <% } %>
+                    </select>
+                </td>
+            </tr>
+            </table>
+            </p>
+
+            <div style="display:" id="inputdiv">
+            <p>
+            <input type="hidden" name="provider" value="<%= user.name %>">
+            <!-- 你的身份：
+            <select name="provider">
+                <option value="anonymous">匿名</option>
+                <% for(var i=0;i<account.length;i++) { %>
+                    <option value="<%= account[i] %>"><%= account[i] %></option>
+                <% } %>
+            </select> -->
+            </p>
+
+            <p>
+                請輸入你覺得對方哪件事做得最好：<br>
+                <textarea cols="80" rows="15" name=good></textarea>
+            </p>
+            <p>
+                請輸入你覺得對方哪件事情可以改變作法：<br>
+                <textarea cols="80" rows="15" name=improve></textarea>
+            </p>
+            </div>
+            <input id="submit_button" type="submit" value="<%= action_default %>">
+        </form>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

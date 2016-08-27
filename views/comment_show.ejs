@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title><%= title %></title>
+      <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <table border="1" style="width:100%" id="grade">
+            <tr>
+                <td><h2>Good Job!</h2></td>
+                <td><h2>To be Improved...</h2></td>
+            </tr>
+            <% for(var i=0;i<comment.length;i++) { %>
+                <tr>
+                    <td><%= comment[i].c1 %></td>
+                    <td><%= comment[i].c2 %></td>
+                </tr>
+            <% } %>
+        </table>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>

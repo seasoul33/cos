@@ -1,0 +1,28 @@
+body {
+    padding: 30px;
+    /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
+    font: 14px Palatino, Helvetica;
+}
+
+a {
+    color: #00B7FF;
+}
+
+p.input_section {
+    background-color: #ddd;
+}
+
+table tr.title {
+    background-color: #ddd;
+}
+
+table td.question_title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+table td.absolute_width {
+    width: 14px;
+    text-align: center;
+    font-weight: bold;
+}

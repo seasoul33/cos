@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <!-- <% if(isAdmin == true) { %>
+        <h1><%= title %></h1><a href="/horizontal_rawdata">同事互評排行榜</a>
+        <% } %> -->
+        <p>Start to give a grade for a colleague...</p><br>
+        <form action="/horizontal_give" method="post">
+            <p>
+            請選擇要評價的對象：
+            <select name="account">
+                <% for(var i=0;i<account.length;i++) { %>
+                    <option value="<%= account[i] %>"><%= account[i] %></option>
+                <% } %>
+            </select>
+            </p>
+
+            <p>
+            <input type="hidden" name="provider" value="<%= user.name %>">
+            <!-- 你的身份：
+            <select name="provider">
+                <option value="anonymous">匿名</option>
+                <% for(var i=0;i<account.length;i++) { %>
+                    <option value="<%= account[i] %>"><%= account[i] %></option>
+                <% } %>
+            </select> -->
+            </p>
+
+            <p><input type="hidden" name=question_ver value="<%= result[0] %>">
+            <table border="1" id="grade">
+                <tr class="title">
+                    <td class="question_title">Question Version: <%= result[0] %></td>
+                    <td class="absolute_width"><%= grade_string[0] %></td>
+                    <td class="absolute_width"><%= grade_string[1] %></td>
+                    <td class="absolute_width"><%= grade_string[2] %></td>
+                    <td class="absolute_width"><%= grade_string[3] %></td>
+                    <td class="absolute_width"><%= grade_string[4] %></td>
+                </tr>
+                <% for(var i=1;i<result.length;i++) { %>
+                <tr>
+                    <td><%= result[i] %>:</td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[0] %>></td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[1] %>></td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[2] %> checked></td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[3] %>></td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[4] %>></td>
+                </tr>
+                <% } %>
+            </table>
+            </p>
+            <p>
+                請輸入你覺得對方哪件事做得最好：<br>
+                <textarea cols="80" rows="15" name=good></textarea>
+            </p>
+            <p>
+                請輸入你覺得對方哪件事情可以改變作法：<br>
+                <textarea cols="80" rows="15" name=improve></textarea>
+            </p>
+            <input type="submit" value="送出">
+        </form>
+
+        <%- link_banner.basic %>
+        <% if(isAdmin == true) { %>
+        <%- link_banner.admin %>
+        <% } else if(isLeader == true) { %>
+        <%- link_banner.leader %>
+        <% } %>
+        <%- link_banner.logout %>
+    </body>
+</html>
