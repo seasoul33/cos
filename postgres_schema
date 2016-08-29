@@ -125,7 +125,7 @@ ALTER TABLE horizontal_result OWNER TO db_owner_account;
 CREATE TABLE upward_grade (
     candidate character varying(20),
     year smallint,
-    quarter smallint
+    quarter smallint,
     question_ver smallint,
     provider character varying(20),
     apply_time timestamp without time zone,
