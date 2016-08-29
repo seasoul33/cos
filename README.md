@@ -18,3 +18,5 @@ Planed to support:
 1. Horizontal grading to colleagues in the group.
 2. Topics forum(?)
 3. Any thing help to build the circle of safety.
+
+Database: Postgres 9.5.3
