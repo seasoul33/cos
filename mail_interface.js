@@ -48,7 +48,7 @@ function inform(who, year, quarter) {
 		mailbody += '</table></p>';
 
 		let mailOptions = {
-						    from: '"Circle of Safety System" <noreply@deltaww.com>',
+						    from: '"Circle of Safety System" <noreply@cos.org>',
 						    to: mailaddress,
 						    subject: '您的 '+year+'Q'+quarter+' 向上回饋結果',
 						    html: mailbody
