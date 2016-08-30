@@ -1,5 +1,6 @@
 let nodemailer=require('nodemailer');
 let data = require('./db_interface');
+let usercontrol=require('./usercontrol');
 
 function inform(who, year, quarter) {
 	let account = [];
@@ -16,6 +17,7 @@ function inform(who, year, quarter) {
 	for(let i=0;i<account.length;i++) {
 		let result = data.upward_view(account[i], year, quarter);
 		let comment = data.comment_retrive(account[i], year, quarter);
+		let mailaddress = usercontrol.getUser(account[i]).email;
 		let mailbody='';
 
 		if(result.length == 0) {
@@ -46,8 +48,8 @@ function inform(who, year, quarter) {
 		mailbody += '</table></p>';
 
 		let mailOptions = {
-						    from: '"Circle of Safety System" <noreply@deltaww.com>',
-						    to: 'hityang@gmail.com, edgar.yang@deltaww.com',
+						    from: '"Circle of Safety System" <noreply@cos.org>',
+						    to: mailaddress,
 						    subject: '您的 '+year+'Q'+quarter+' 向上回饋結果',
 						    html: mailbody
 						  };
