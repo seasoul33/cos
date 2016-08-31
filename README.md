@@ -22,6 +22,7 @@ Planed to support:
 Database: Postgres 9.5.3
 
 Please be noted that:
+
 1. Install Postgresql before 'npm install'.
 2. Replace the postgresql username/password with your own.
 3. Replace the username/password with your own to access smtp server.
