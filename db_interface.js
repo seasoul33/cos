@@ -131,14 +131,14 @@ function grade_give(req, type) {
                         '\'' + req.body.account      + '\', ' + 
                                req.body.question_ver + ', ' +
                         '\'' + 'now()'               + '\', ' +
-                        '\'' + req.body.provider     + '\'' +
+                        '\'' + req.body.provider     + '\',' +
                         req.body.year + ', ' +
-                        req.body.quarter + ', ' +
+                        req.body.quarter +
                         grade_value_sql_string +
                         ')';
     
     command += 'INSERT INTO ' + type + '_grade ' + 
-               '(candidate, question_version, apply_time, provider, year, quarter' + 
+               '(candidate, question_ver, apply_time, provider, year, quarter' + 
                grade_column_sql_string + ') ' +
                'VALUES ' + value_sql_string;
     sql.excute(command);
@@ -277,7 +277,6 @@ function upward_calculate(who, year, quarter) {
                            '\'' + candidate_name + '\', ' +
                            year + ', ' +
                            quarter + ', ' +
-                           0 + ', ' +
                            total + ', ' +
                            favor_percent + ', ' +
                            neural_percent + ', ' +

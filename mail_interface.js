@@ -25,6 +25,7 @@ function inform(who, year, quarter) {
 			continue;
 		}
 
+		mailbody += '<head><style>body {font-family: \'Microsoft JhengHei\', \'Heiti TC\', \'WenQuanYi Zen Hei\', Helvetica;}</style><head>';
 		mailbody += '<p><table border="1">\n';
 		mailbody += '<tr><td><b>項目</b></td><td><b>正評比例</b></td><td><b>中評比例</b></td><td><b>負評比例</b></td></tr>';
 		for(let j=0;j<question_list.length-1;j++) {
