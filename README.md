@@ -26,4 +26,5 @@ Please be noted that:
 1. Install Postgresql before 'npm install'.
 2. Replace the postgresql username/password with your own.
 3. Replace the username/password with your own to access smtp server.
-4. Insert question data into database.(table 'xxx_question').
+4. Insert question data into database.(table 'xxx_question')
+5. Create admin account into database.(table 'account')
