@@ -8,7 +8,7 @@ function inform(who, year, quarter) {
 	let question_list = data.question_retrive('upward');
 	
 	if(who == 'all') {
-		account.push(...data.account_leader_retrive());
+		account.push(...data.account_name_collect('leader'));
 	}
 	else {
 		account.push(who);
