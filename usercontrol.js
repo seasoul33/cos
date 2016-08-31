@@ -16,10 +16,11 @@ pw = credential();
 function manageUser(action, user) {
 	if(action == manage_action.create) {
 		//here we should use 'credential' to hash the password first
-		// pw.hash(user.password, function(err, hash) {
-		// 	user.password = hash;
-		// });
-		data.account_create(user);
+		pw.hash(user.password, function(err, hash) {
+			user.password = JSON.stringify(hash);
+			data.account_create(user);
+		});
+		
 	}
 	else if(action == manage_action.modify) {
 		if(user.password == '') {
@@ -27,16 +28,19 @@ function manageUser(action, user) {
 			if(original_user != null) {
 				user.password = original_user.password;
 			}
+			data.account_modify(user);
 		}
 		else {
-			//here we should use 'credential' to hash the password first
-			// pw.hash(user.password, function(err, hash) {
-			// 	user.password = hash;
-			// });
+			pw.hash(user.password, function(err, hash) {
+				user.password = JSON.stringify(hash);
+				data.account_modify(user);
+			});
 		}
-		data.account_modify(user);
 	}
 	else if(action == manage_action.delete) {
+		if(user.name == 'admin') {
+			return false;
+		}
 		data.account_delete(user);
 	}
 }
