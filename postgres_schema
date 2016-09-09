@@ -39,7 +39,7 @@ SET default_with_oids = false;
 
 CREATE TABLE account (
     name character varying(20) NOT NULL,
-    password character varying(20),
+    password character text,
     "group" smallint DEFAULT 1,
     employeeno character(6),
     email character varying(30),

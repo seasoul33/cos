@@ -59,6 +59,22 @@ function getUser(username, need_password) {
 	}
 }
 
+function getAccountnameList(type, need_admin) {
+	let user=data.account_name_collect(type);
+
+	if(user == null) {
+		return null;
+	}
+	else {
+		if(!need_admin) {
+			return user.filter(function(name) {
+				   					return (name != 'admin');
+				   			   });
+		}
+		return user;
+	}
+}
+
 function isAdministrator(user) {
 	if( (user.group === privelidge.admin) ||
 	    (user.group === privelidge.leader_admin) ) {
@@ -77,6 +93,7 @@ function isLeader(user) {
 
 exports.manageUser = manageUser;
 exports.getUser = getUser;
+exports.getAccountnameList = getAccountnameList;
 exports.isAdministrator = isAdministrator;
 exports.isLeader = isLeader;
 exports.privelidge = privelidge;

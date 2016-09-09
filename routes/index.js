@@ -59,7 +59,7 @@ router.get('/topics', function(req, res, next) {
 /* GET horizontal_give page. */
 router.get('/horizontal_give', function(req, res, next) {
     let result = data.question_retrive('horizontal');
-    let account = data.account_name_collect('all');
+    let account = usercontrol.getAccountnameList('all', false);
     let isAdmin = usercontrol.isAdministrator(req.user);
     let isLeader = usercontrol.isLeader(req.user);
     res.render('horizontal_give',
@@ -94,7 +94,7 @@ router.post('/horizontal_give', function(req, res, next) {
 /* GET upward_give page. */
 router.get('/upward_give', function(req, res, next) {
     let result = data.question_retrive('upward');
-    let account = data.account_name_collect('leader');
+    let account = usercontrol.getAccountnameList('leader', false);
     let isAdmin = usercontrol.isAdministrator(req.user);
     let isLeader = usercontrol.isLeader(req.user);
     res.render('upward_give', 
@@ -196,7 +196,7 @@ router.get('/upward_rawdata', function(req, res, next) {
 
 /* GET comment page. */
 router.get('/comment', function(req, res, next) {
-    let account = data.account_name_collect('leader');
+    let account = usercontrol.getAccountnameList('leader', false);
     let isAdmin = usercontrol.isAdministrator(req.user);
     let isLeader = usercontrol.isLeader(req.user);
     res.render('comment', 
@@ -265,7 +265,7 @@ router.get('/upward_calculate', function(req, res, next) {
     }
     else {
         let isLeader = usercontrol.isLeader(req.user);
-        let account = data.account_name_collect('leader');
+        let account = usercontrol.getAccountnameList('leader', false);
         res.render('upward_calculate', 
                { title: '手動結算', 
                  user: req.user,
@@ -300,7 +300,7 @@ router.get('/upward_fullresult', function(req, res, next) {
     let isLeader = usercontrol.isLeader(req.user);
     let account = [];
     if(isAdmin) {
-        account = data.account_name_collect('leader');
+        account = usercontrol.getAccountnameList('leader', false);
     }
     else if(isLeader) {
         account.push(req.user.name);
@@ -352,7 +352,7 @@ router.get('/upward_announce', function(req, res, next) {
     }
     else {
         let isLeader = usercontrol.isLeader(req.user);
-        let account = data.account_name_collect('leader');
+        let account = usercontrol.getAccountnameList('leader', false);
         res.render('upward_announce', 
                    { title: '通知向上回饋結果', 
                      user: req.user,
@@ -391,7 +391,7 @@ router.get('/account_manage', function(req, res, next) {
     }
     else {
         let isLeader = usercontrol.isLeader(req.user);
-        let account = data.account_name_collect('all');
+        let account = usercontrol.getAccountnameList('all', true);
         res.render('account_manage', 
                { title: '帳戶管理', 
                  user: req.user,
