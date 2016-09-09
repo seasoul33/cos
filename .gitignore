@@ -2,3 +2,4 @@ node_modules
 
 .jshintignore
 .jshintrc
+npm-debug.log
