@@ -24,26 +24,26 @@ function account_name_collect(type) {
     let rows;
     let command = '';
     let result = [];
-    let condition_sql_string;
+    let condition_sqlstring;
 
     if(type === 'all') { // non-admin
-        condition_sql_string = 'WHERE "group" = ' + usercontrol.privelidge.leader;
-        condition_sql_string += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
-        condition_sql_string += ' OR "group" = ' + usercontrol.privelidge.normal;
+        condition_sqlstring = 'WHERE "group" = ' + usercontrol.privelidge.leader;
+        condition_sqlstring += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
+        condition_sqlstring += ' OR "group" = ' + usercontrol.privelidge.normal;
     }
     else if(type === 'normal') {
-        condition_sql_string = 'WHERE "group" = ' + usercontrol.privelidge.normal;
+        condition_sqlstring = 'WHERE "group" = ' + usercontrol.privelidge.normal;
     }
     else if(type === 'leader') {
-        condition_sql_string = 'WHERE "group" = ' + usercontrol.privelidge.leader;
-        condition_sql_string += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
+        condition_sqlstring = 'WHERE "group" = ' + usercontrol.privelidge.leader;
+        condition_sqlstring += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
     }
     else if(type === 'admin') {
-        condition_sql_string = 'WHERE "group" = ' + usercontrol.privelidge.admin;
-        condition_sql_string += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
+        condition_sqlstring = 'WHERE "group" = ' + usercontrol.privelidge.admin;
+        condition_sqlstring += ' OR "group" = ' + usercontrol.privelidge.leader_admin;
     }
 
-    command += 'SELECT name FROM account ' + condition_sql_string + ' ORDER BY name ASC';
+    command += 'SELECT name FROM account ' + condition_sqlstring + ' ORDER BY name ASC';
     rows = sql.excute(command);
 
     if(rows.length == 0) {
@@ -119,28 +119,55 @@ function account_delete(data) {
 function grade_give(req, type) {
     let q_list = question_retrive(type);
     let command = '';
-    let grade_column_sql_string = '';
-    let grade_value_sql_string = '';
-    let value_sql_string = '';
+    let value_sqlstring = '';
 
-    for(let i=1;i<q_list.length;i++) {
-        grade_column_sql_string += ', grade' + i; 
-        grade_value_sql_string += ', ' + req.body['grade'+i];
-    }
-    value_sql_string += '('  + 
-                        '\'' + req.body.account      + '\', ' + 
-                               req.body.question_ver + ', ' +
-                        '\'' + 'now()'               + '\', ' +
-                        '\'' + req.body.provider     + '\',' +
-                        req.body.year + ', ' +
-                        req.body.quarter +
-                        grade_value_sql_string +
-                        ')';
+    let locate_sqlstring = 'WHERE ' +
+                            'candidate = \'' + req.body.account + '\' and ' +
+                            'provider = \'' + req.body.provider + '\' and ' +
+                            'year = ' + req.body.year + ' and ' +
+                            'quarter = ' + req.body.quarter;
+    let rows = sql.excute('SELECT FROM ' + type + '_grade ' + locate_sqlstring);
     
-    command += 'INSERT INTO ' + type + '_grade ' + 
-               '(candidate, question_ver, apply_time, provider, year, quarter' + 
-               grade_column_sql_string + ') ' +
-               'VALUES ' + value_sql_string;
+    if(rows.length != 0) {
+        let grade_update_sqlstring = '';
+
+        for(let i=1;i<q_list.length;i++) {
+            grade_update_sqlstring += 'grade' + i + '=' + req.body['grade'+i]; 
+            if(i < (q_list.length-1)) {
+                grade_update_sqlstring += ', ';
+            }
+        }
+
+        command += 'UPDATE ' + type + '_grade SET ' +
+                       'question_ver=' + req.body.question_ver + ', ' +
+                       'apply_time=\'now()\', ' +
+                       grade_update_sqlstring + ' ' +
+                       locate_sqlstring;
+    }
+    else {
+        let grade_column_sqlstring = '';
+        let grade_value_sqlstring = '';
+
+        for(let i=1;i<q_list.length;i++) {
+            grade_column_sqlstring += ', grade' + i; 
+            grade_value_sqlstring += ', ' + req.body['grade'+i];
+        }
+        
+        value_sqlstring += '('  + 
+                            '\'' + req.body.account      + '\', ' + 
+                                   req.body.question_ver + ', ' +
+                            '\'now()\', ' +
+                            '\'' + req.body.provider     + '\',' +
+                            req.body.year + ', ' +
+                            req.body.quarter +
+                            grade_value_sqlstring +
+                            ')';
+        
+        command += 'INSERT INTO ' + type + '_grade ' + 
+                   '(candidate, question_ver, apply_time, provider, year, quarter' + 
+                   grade_column_sqlstring + ') ' +
+                   'VALUES ' + value_sqlstring;
+    }
     sql.excute(command);
 
     return true; // should do error handling
@@ -148,12 +175,12 @@ function grade_give(req, type) {
 
 function giving_comment(req) {
     let command = '';
-    let value_sql_string = '';
+    let value_sqlstring = '';
     
     if( (req.body.good.length != 0) || (req.body.improve.length !=0) ) {
-        value_sql_string += '('  +
+        value_sqlstring += '('  +
                             '\'' + req.body.account  + '\', ' +
-                            '\'' + 'now()'           + '\', ' +
+                            '\'now()\', ' +
                             '\'' + req.body.provider + '\', ' +
                             '\'' + req.body.good + '\', ' +
                             '\'' + req.body.improve + '\', ' +
@@ -163,7 +190,7 @@ function giving_comment(req) {
 
         command += 'INSERT INTO comment ' +
                    '(candidate, apply_time, provider, good_thing, to_improve, year, quarter) ' +
-                   'VALUES ' + value_sql_string;
+                   'VALUES ' + value_sqlstring;
         sql.excute(command);
     }
 
@@ -174,13 +201,13 @@ function rawdata_list(type) {
     let rows;
     let command = '';
     let q_list = question_retrive(type);
-    let select_sql_string = 'SELECT candidate';
+    let select_sqlstring = 'SELECT candidate';
 
     for(let i=1;i<q_list.length;i++) {
-        select_sql_string += ', sum(grade' + i + ') AS G' + i;
+        select_sqlstring += ', sum(grade' + i + ') AS G' + i;
     }
 
-    command += select_sql_string + ' FROM ' + type + '_grade GROUP BY candidate ORDER BY candidate ASC';
+    command += select_sqlstring + ' FROM ' + type + '_grade GROUP BY candidate ORDER BY candidate ASC';
     rows = sql.excute(command);
 
     return rows;
@@ -189,17 +216,17 @@ function rawdata_list(type) {
 function comment_retrive(account, year, quarter) {
     let rows;
     let command = '';
-    let select_sql_string = 'SELECT ';
-    let condition_sql_string = 'WHERE ';
+    let select_sqlstring = 'SELECT ';
+    let condition_sqlstring = 'WHERE ';
 
-    select_sql_string += 'good_thing AS C1, ';
-    select_sql_string += 'to_improve AS C2';
+    select_sqlstring += 'good_thing AS C1, ';
+    select_sqlstring += 'to_improve AS C2';
 
-    condition_sql_string += 'candidate = \'' + account + '\'';
-    condition_sql_string += ' AND year = ' + year;
-    condition_sql_string += ' AND quarter = ' + quarter;
+    condition_sqlstring += 'candidate = \'' + account + '\'';
+    condition_sqlstring += ' AND year = ' + year;
+    condition_sqlstring += ' AND quarter = ' + quarter;
 
-    command += select_sql_string + ' FROM comment ' + condition_sql_string;
+    command += select_sqlstring + ' FROM comment ' + condition_sqlstring;
     rows = sql.excute(command);
 
     return rows;
