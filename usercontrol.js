@@ -15,9 +15,8 @@ pw = credential();
 
 function manageUser(action, user) {
 	if(action == manage_action.create) {
-		//here we should use 'credential' to hash the password first
 		pw.hash(user.password, function(err, hash) {
-			user.password = JSON.stringify(hash);
+			user.password = hash;
 			data.account_create(user);
 		});
 		

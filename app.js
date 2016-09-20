@@ -45,12 +45,17 @@ passport.use(new localStrategy(authen.verify));
 app.post('/login',
     passport.authenticate('local', { session: true,
                                     //successRedirect: '/index',
-                                    failureRedirect: '/',
-                                    failureFlash: false }),
-    function(req, res) {
+                                    // failureRedirect: '/',
+                                    failWithError: true}),
+    function(req, res, next) {
         req.session.passport.flag = 1;
         req.session.passport.starttime = Date.now();
         res.redirect('/index');
+    },
+    function(err, req, res, next) {
+        res.render('login', { title: 'Login to Circle of Safety',
+                              ErrMsg: 'Username/Password incorrect...'
+                            });
     }
 );
 
