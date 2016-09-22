@@ -11,19 +11,19 @@
         Please do your best to help the COS building.</p><br>
         <h2>Entrance:</h2>
         <ul>
-            <!-- <li><a href="/topics"><h3>百無禁忌</h3></a></li><br> -->
-            <!-- <li><a href="/horizontal_give"><h3>同事互評</h3></a></li><br> -->
-            <li><a href="/upward_give"><h3>向上回饋</h3></a></li><br>
-            <li><a href="/comment"><h3>評語</h3></a></li><br>
+            <!-- <h3><li><a href="/topics">百無禁忌</a></li></h3><br> -->
+            <!-- <h3><li><a href="/horizontal_give">同事互評</a></li></h3><br> -->
+            <h3><li><a href="/upward_give">向上回饋</a></li></h3><br>
+            <h3><li><a href="/comment">評語</a></li></h3><br>
             <% if(isAdmin == true) { %>
-            <!-- <li><a href="/grade_rawdata_list"><h3>排行榜</h3></a></li><br> -->
-            <li><a href="/upward_result"><h3>向上回饋評分管理</h3></a></li><br>
-            <li><a href="/account_manage"><h3>帳戶管理</h3></a></li><br>
+            <!-- <h3><li><a href="/grade_rawdata_list">排行榜</a></li></h3><br> -->
+            <h3><li><a href="/upward_result">向上回饋評分管理</a></li></h3><br>
+            <h3><li><a href="/account_manage">帳戶管理</a></li></h3><br>
             <% } else if(isLeader == true) { %>
-            <li><a href="/upward_fullresult"><h3>查詢向上回饋結果</h3></a></li><br>
+            <h3><li><a href="/upward_fullresult">查詢向上回饋結果</a></li></h3><br>
             <% } %>
-            <!-- <li><h3>OKR</h3></li><br> -->
-            <!-- <li><h3>考績</h3></li> -->
+            <!-- <h3><li>OKR</li></h3><br> -->
+            <!-- <h3><li>考績</li></h3> -->
 
         </ul>
         <%- link_banner.basic %>
