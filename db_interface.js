@@ -181,25 +181,28 @@ function giving_comment(req) {
     let command = '';
     let value_sqlstring = '';
     
-    if( (req.body.good.length != 0) || (req.body.improve.length !=0) ) {
-        if(req.body.account === req.body.provider) {
-            return false; // here should throw something to let caller know what happens
-        }
-        value_sqlstring += '('  +
-                            '\'' + req.body.account  + '\', ' +
-                            '\'now()\', ' +
-                            '\'' + req.body.provider + '\', ' +
-                            '\'' + req.body.good + '\', ' +
-                            '\'' + req.body.improve + '\', ' +
-                            req.body.year + ', ' +
-                            req.body.quarter +
-                            ')';
-
-        command += 'INSERT INTO comment ' +
-                   '(candidate, apply_time, provider, good_thing, to_improve, year, quarter) ' +
-                   'VALUES ' + value_sqlstring;
-        sql.excute(command);
+    if( (req.body.good.length == 0) && (req.body.improve.length == 0) ) {
+        return true;
     }
+
+    if(req.body.account === req.body.provider) {
+        return false; // here should throw something to let caller know what happens
+    }
+    
+    value_sqlstring += '('  +
+                       '\'' + req.body.account  + '\', ' +
+                       '\'now()\', ' +
+                       '\'' + req.body.provider + '\', ' +
+                       '\'' + req.body.good + '\', ' +
+                       '\'' + req.body.improve + '\', ' +
+                       req.body.year + ', ' +
+                       req.body.quarter +
+                       ')';
+
+    command += 'INSERT INTO comment ' +
+               '(candidate, apply_time, provider, good_thing, to_improve, year, quarter) ' +
+               'VALUES ' + value_sqlstring;
+    sql.excute(command);
 
     return true; // should do error handling
 }
