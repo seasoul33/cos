@@ -121,6 +121,10 @@ function grade_give(req, type) {
     let command = '';
     let value_sqlstring = '';
 
+    if(req.body.account === req.body.provider) {
+        return false; // here should throw something to let caller know what happens
+    }
+
     let locate_sqlstring = 'WHERE ' +
                             'candidate = \'' + req.body.account + '\' and ' +
                             'provider = \'' + req.body.provider + '\' and ' +
@@ -178,6 +182,9 @@ function giving_comment(req) {
     let value_sqlstring = '';
     
     if( (req.body.good.length != 0) || (req.body.improve.length !=0) ) {
+        if(req.body.account === req.body.provider) {
+            return false; // here should throw something to let caller know what happens
+        }
         value_sqlstring += '('  +
                             '\'' + req.body.account  + '\', ' +
                             '\'now()\', ' +
