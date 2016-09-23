@@ -143,10 +143,10 @@ function grade_give(req, type) {
         }
 
         command += 'UPDATE ' + type + '_grade SET ' +
-                       'question_ver=' + req.body.question_ver + ', ' +
-                       'apply_time=\'now()\', ' +
-                       grade_update_sqlstring + ' ' +
-                       locate_sqlstring;
+                   'question_ver=' + req.body.question_ver + ', ' +
+                   'apply_time=\'now()\', ' +
+                   grade_update_sqlstring + ' ' +
+                   locate_sqlstring;
     }
     else {
         let grade_column_sqlstring = '';
@@ -188,20 +188,36 @@ function giving_comment(req) {
     if(req.body.account === req.body.provider) {
         return false; // here should throw something to let caller know what happens
     }
-    
-    value_sqlstring += '('  +
-                       '\'' + req.body.account  + '\', ' +
-                       '\'now()\', ' +
-                       '\'' + req.body.provider + '\', ' +
-                       '\'' + req.body.good + '\', ' +
-                       '\'' + req.body.improve + '\', ' +
-                       req.body.year + ', ' +
-                       req.body.quarter +
-                       ')';
 
-    command += 'INSERT INTO comment ' +
-               '(candidate, apply_time, provider, good_thing, to_improve, year, quarter) ' +
-               'VALUES ' + value_sqlstring;
+    let locate_sqlstring = 'WHERE ' +
+                            'candidate = \'' + req.body.account + '\' and ' +
+                            'provider = \'' + req.body.provider + '\' and ' +
+                            'year = ' + req.body.year + ' and ' +
+                            'quarter = ' + req.body.quarter;
+    let rows = sql.excute('SELECT FROM comment ' + locate_sqlstring);
+
+    if(rows.length != 0) {
+        command += 'UPDATE comment SET ' +
+                   'good_thing=\'' + req.body.good + '\', ' +
+                   'to_improve=\'' + req.body.improve + '\', ' +
+                   'apply_time=\'now()\' ' +
+                   locate_sqlstring;
+    }
+    else {
+        value_sqlstring += '('  +
+                           '\'' + req.body.account  + '\', ' +
+                           '\'now()\', ' +
+                           '\'' + req.body.provider + '\', ' +
+                           '\'' + req.body.good + '\', ' +
+                           '\'' + req.body.improve + '\', ' +
+                           req.body.year + ', ' +
+                           req.body.quarter +
+                           ')';
+
+        command += 'INSERT INTO comment ' +
+                   '(candidate, apply_time, provider, good_thing, to_improve, year, quarter) ' +
+                   'VALUES ' + value_sqlstring;
+    }
     sql.excute(command);
 
     return true; // should do error handling
