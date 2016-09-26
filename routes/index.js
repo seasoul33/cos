@@ -68,7 +68,7 @@ router.get('/horizontal_give', function(req, res, next) {
                  user: req.user,
                  isAdmin: isAdmin,
                  isLeader: isLeader,
-                 account: account, 
+                 account: account.filter(x => x!=req.user.name), 
                  link_banner: definition.link_banner, 
                  grade_value: definition.horizontal_grade_value,
                  grade_string: definition.horizontal_grade_item
@@ -103,7 +103,7 @@ router.get('/upward_give', function(req, res, next) {
                  user: req.user,
                  isAdmin: isAdmin,
                  isLeader: isLeader, 
-                 account: account, 
+                 account: account.filter(x => x!=req.user.name), 
                  link_banner: definition.link_banner,
                  grade_value: definition.upward_grade_value,
                  grade_string: definition.upward_grade_item
@@ -203,7 +203,7 @@ router.get('/comment', function(req, res, next) {
                { title: '評語',
                  user: req.user,
                  isAdmin: isAdmin,  
-                 account: account,
+                 account: account.filter(x => x!=req.user.name),
                  isLeader: isLeader, 
                  link_banner: definition.link_banner
                });
