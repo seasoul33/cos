@@ -61,17 +61,10 @@ function getUser(username, need_password) {
 function getAccountnameList(type, need_admin) {
 	let user=data.account_name_collect(type);
 
-	if(user == null) {
-		return null;
+	if(!need_admin) {
+		return user.filter(x => x!='admin');
 	}
-	else {
-		if(!need_admin) {
-			return user.filter(function(name) {
-				   					return (name != 'admin');
-				   			   });
-		}
-		return user;
-	}
+	return user;
 }
 
 function isAdministrator(user) {

@@ -46,9 +46,6 @@ function account_name_collect(type) {
     command += 'SELECT name FROM account ' + condition_sqlstring + ' ORDER BY name ASC';
     rows = sql.excute(command);
 
-    if(rows.length == 0) {
-        return ['Data empty'];
-    }
     for(let i=0;i<rows.length;i++) {
         result.push(rows[i].name);
     }
