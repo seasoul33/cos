@@ -21,16 +21,17 @@ function inform(who, year, quarter) {
 		let mailbody='';
 
 		if(result.length == 0) {
-			console.log(account[i]);
+			// console.log(account[i]);
 			continue;
 		}
 
 		mailbody += '<head><style>body {font-family: \'Microsoft JhengHei\', \'Heiti TC\', \'WenQuanYi Zen Hei\', Helvetica;}</style><head>';
 		mailbody += '<p><table border="1">\n';
-		mailbody += '<tr><td><b>項目</b></td><td><b>正評比例</b></td><td><b>中評比例</b></td><td><b>負評比例</b></td></tr>';
+		mailbody += '<tr><td><b>項目</b></td><td><b>評量總數</b></td><td><b>正評比例</b></td><td><b>中評比例</b></td><td><b>負評比例</b></td></tr>';
 		for(let j=0;j<question_list.length-1;j++) {
 			mailbody += '<tr>';
 			mailbody += '<td>' + question_list[j+1] + '</td>';
+			mailbody += '<td align="right">' + result[j].total + '</td>';
 			mailbody += '<td align="right">' + result[j].favorable + '%</td>';
 			mailbody += '<td align="right">' + result[j].neutral + '%</td>';
 			mailbody += '<td align="right">' + result[j].unfavorable + '%</td>';
