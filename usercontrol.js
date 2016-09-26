@@ -31,7 +31,7 @@ function manageUser(action, user) {
 		}
 		else {
 			pw.hash(user.password, function(err, hash) {
-				user.password = JSON.stringify(hash);
+				user.password = hash;
 				data.account_modify(user);
 			});
 		}
