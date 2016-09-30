@@ -27,14 +27,19 @@ function inform(who, year, quarter) {
 
 		mailbody += '<head><style>body {font-family: \'Microsoft JhengHei\', \'Heiti TC\', \'WenQuanYi Zen Hei\', Helvetica;}</style><head>';
 		mailbody += '<p><table border="1">\n';
-		mailbody += '<tr><td><b>項目</b></td><td><b>評量總數</b></td><td><b>正評比例</b></td><td><b>中評比例</b></td><td><b>負評比例</b></td></tr>';
+		mailbody += '<tr><td><b>項目</b></td><td><b>評量總數</b></td>' + 
+		            '<td><b>正評比例</b></td><td><b>中評比例</b></td><td><b>負評比例</b></td>' + 
+		            '<td><b>領先者正評比例</b></td><td><b>領先者評量總數</b></td></tr>';
 		for(let j=0;j<question_list.length-1;j++) {
+			let leader=data.upward_leader_find(j+1, year, quarter);
 			mailbody += '<tr>';
 			mailbody += '<td>' + question_list[j+1] + '</td>';
 			mailbody += '<td align="right">' + result[j].total + '</td>';
 			mailbody += '<td align="right">' + result[j].favorable + '%</td>';
 			mailbody += '<td align="right">' + result[j].neutral + '%</td>';
 			mailbody += '<td align="right">' + result[j].unfavorable + '%</td>';
+			mailbody += '<td align="right">' + leader.favorable + '%</td>';
+			mailbody += '<td align="right">' + leader.total + '</td>';
 			mailbody += '</tr>';
 		}
 		mailbody += '</table></p>';

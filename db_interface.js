@@ -410,6 +410,30 @@ function upward_view(who, year, quarter) {
     return result;
 }
 
+function upward_leader_find(question_num, year, quarter) {
+    let rows;
+    let command='';
+    let max_favor_cmd_string='';
+    let max_question_ver = question_max_version_retrive('upward');
+
+    max_favor_cmd_string = '(SELECT MAX(favorable) FROM upward_result';
+    max_favor_cmd_string += ' WHERE question_ver=' + max_question_ver + 
+                            ' AND grade_num=' + question_num +
+                            ' AND year=' + year +
+                            ' AND quarter=' + quarter +
+                            ')';
+
+    command = 'SELECT * FROM upward_result';
+    command += ' WHERE favorable=' + max_favor_cmd_string +
+               ' AND question_ver=' + max_question_ver +
+               ' AND grade_num=' + question_num +
+               ' AND year=' + year +
+               ' AND quarter=' + quarter +
+               ' ORDER BY total DESC';
+
+    rows = sql.excute(command);
+    return rows[0];
+}
 
 exports.question_retrive = question_retrive;
 exports.question_max_version_retrive = question_max_version_retrive;
@@ -429,3 +453,4 @@ exports.comment_retrive = comment_retrive;
 
 exports.upward_calculate = upward_calculate;
 exports.upward_view = upward_view;
+exports.upward_leader_find = upward_leader_find;
