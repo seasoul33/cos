@@ -5,8 +5,9 @@ function question_retrive(type) {
 	let rows;
     let command = '';
     let result = [];
+    let max_question_ver = question_max_version_retrive(type);
 
-    command += 'SELECT * FROM ' + type + '_question where question_ver = (select MAX(question_ver) from ' + type + '_question)';
+    command += 'SELECT * FROM ' + type + '_question WHERE question_ver = ' + max_question_ver;
     rows = sql.excute(command);
 
     if(rows.length == 0) {
@@ -18,6 +19,16 @@ function question_retrive(type) {
     }
 
     return result;
+}
+
+function question_max_version_retrive(type) {
+    let rows;
+    let command = '';
+
+    command += 'SELECT MAX(question_ver) FROM ' + type + '_question';
+    rows = sql.excute(command);
+
+    return rows[0].max;
 }
 
 function account_name_collect(type) {
@@ -401,6 +412,8 @@ function upward_view(who, year, quarter) {
 
 
 exports.question_retrive = question_retrive;
+exports.question_max_version_retrive = question_max_version_retrive;
+
 exports.account_retrive = account_retrive;
 exports.account_name_collect = account_name_collect;
 exports.account_lookup = account_lookup;
