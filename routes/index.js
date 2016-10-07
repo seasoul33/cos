@@ -77,16 +77,36 @@ router.get('/horizontal_give', function(req, res, next) {
 /* POST horizontal_give page. */
 router.post('/horizontal_give', function(req, res, next) {
     let result = data.grade_give(req, 'horizontal');
+    let isAdmin = usercontrol.isAdministrator(req.user);
+    let isLeader = usercontrol.isLeader(req.user);
     if(!result) {
-        res.end('Fail to insert grade.');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: 'Fail to insert grade.',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader,
+                    link_banner: definition.link_banner
+                  });
     }
 
     result = data.giving_comment(req);
     if(!result) {
-        res.end('Fail to insert comment.');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: 'Fail to insert comment.',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader,
+                    link_banner: definition.link_banner
+                  });
     }
 
-    res.end("Thanks for giving a grade to " + req.body.account + '.');
+    res.render('result_template',
+              { title: 'Result', 
+                message: 'Thanks for giving a grade to ' + req.body.account + '.',
+                isAdmin: isAdmin,
+                isLeader: isLeader,
+                link_banner: definition.link_banner
+              });
 });
 
 //----------------
@@ -112,16 +132,36 @@ router.get('/upward_give', function(req, res, next) {
 /* POST upward_give page. */
 router.post('/upward_give', function(req, res, next) {
     let result = data.grade_give(req, 'upward');
+    let isAdmin = usercontrol.isAdministrator(req.user);
+    let isLeader = usercontrol.isLeader(req.user);
     if(!result) {
-        res.end('Fail to insert grade.');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: 'Fail to insert grade.',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader, 
+                    link_banner: definition.link_banner
+                  });
     }
 
     result = data.giving_comment(req);
     if(!result) {
-        res.end('Fail to insert comment.');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: 'Fail to insert comment.',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader,
+                    link_banner: definition.link_banner
+                  });
     }
 
-    res.end('Thanks for giving a grade to Leader ' + req.body.account + '.');
+    res.render('result_template',
+              { title: 'Result', 
+                message: 'Thanks for giving a grade to Leader ' + req.body.account + '.',
+                isAdmin: isAdmin,
+                isLeader: isLeader,
+                link_banner: definition.link_banner
+              });
 });
 
 //----------------
@@ -210,18 +250,30 @@ router.get('/comment', function(req, res, next) {
 });
 /* POST comment page. */
 router.post('/comment', function(req, res, next) {
+    let isAdmin = usercontrol.isAdministrator(req.user);
+    let isLeader = usercontrol.isLeader(req.user);
     if(req.body.write == 1) {
         let result = data.giving_comment(req);
         if(!result) {
-            res.end('Fail to insert comment.');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Fail to insert comment.',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
 
-        res.end("Thanks for giving a grade to " + req.body.account + '.');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: 'Thanks for giving a grade to ' + req.body.account + '.',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader,
+                    link_banner: definition.link_banner
+                  });
     }
     else {
         let comment = data.comment_retrive(req.body.account, req.body.year, req.body.quarter);
-        let isAdmin = usercontrol.isAdministrator(req.user);
-        let isLeader = usercontrol.isLeader(req.user);
         let title = req.body.year + ' Q' + req.body.quarter + ' 給 ' + req.body.account + ' 的評語';
         res.render('comment_show', 
                    { title: title, 
@@ -283,12 +335,25 @@ router.post('/upward_calculate', function(req, res, next) {
         next();
     }
     else {
+        let isLeader = usercontrol.isLeader(req.user);
         let result = data.upward_calculate(req.body.account, req.body.year, req.body.quarter);
         if(!result) {
-            res.end('Fail to calculate grade result.');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Fail to calculate grade result.',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
 
-        res.end(req.body.year + '年 第 ' + req.body.quarter + ' 季 向上回饋結算完畢');
+        res.render('result_template',
+                  { title: 'Result', 
+                    message: req.body.year + '年 第 ' + req.body.quarter + ' 季 向上回饋結算完畢',
+                    isAdmin: isAdmin,
+                    isLeader: isLeader,
+                    link_banner: definition.link_banner
+                  });
     }
 });
 
@@ -327,7 +392,13 @@ router.post('/upward_fullresult', function(req, res, next) {
     else {
         let result = data.upward_view(req.body.account, req.body.year, req.body.quarter);
         if(result.length == 0) {
-            res.end('Fail to retrive matched result.');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Fail to retrive matched result.',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
         else {
             res.render('upward_fullresult_render', 
@@ -370,12 +441,25 @@ router.post('/upward_announce', function(req, res, next) {
         next();
     }
     else {
+        let isLeader = usercontrol.isLeader(req.user);
         let result = mail.inform(req.body.account, req.body.year, req.body.quarter);
         if(result == false) {
-            res.end('Fail to retrive matched result.');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Fail to retrive matched result.',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
         else {
-            res.end(req.body.year + '年 第 ' + req.body.quarter + ' 季 向上回饋結果通知完畢');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: req.body.year + '年 第 ' + req.body.quarter + ' 季 向上回饋結果通知完畢',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
     }
 });
@@ -411,14 +495,27 @@ router.post('/account_manage', function(req, res, next) {
         next();
     }
     else {
+        let isLeader = usercontrol.isLeader(req.user);
         let post_parameter = Object.assign({}, req.body);
         let result = usercontrol.manageUser(req.body.action, post_parameter);
 
         if(result == false) {
-            res.end('Fail to manage account ' + post_parameter.name + '.');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Fail to manage account ' + post_parameter.name + '.',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
         else {
-            res.end('Manage account ' + post_parameter.name + ' successfully!');
+            res.render('result_template',
+                      { title: 'Result', 
+                        message: 'Manage account ' + post_parameter.name + ' successfully!',
+                        isAdmin: isAdmin,
+                        isLeader: isLeader,
+                        link_banner: definition.link_banner
+                      });
         }
     }
 });
