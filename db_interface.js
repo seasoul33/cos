@@ -1,5 +1,6 @@
 let sql = require('./postgressql');
 let usercontrol = require('./usercontrol');
+let definition = require('./definition');
 
 function question_retrive(type) {
 	let rows;
@@ -161,7 +162,7 @@ function grade_give(req, type) {
         let grade_value_sqlstring = '';
 
         for(let i=1;i<q_list.length;i++) {
-            grade_column_sqlstring += ', grade' + i; 
+            grade_column_sqlstring += ', grade' + i;
             grade_value_sqlstring += ', ' + req.body['grade'+i];
         }
         
@@ -306,6 +307,7 @@ function upward_calculate(who, year, quarter) {
             command += ' WHERE candidate=\'' + candidate_name + '\'';
             command += ' AND year = ' + year;
             command += ' AND quarter = ' + quarter;
+            command += ' AND grade' + j + ' != ' + definition.nothing_grade_value;
             command += ' AND grade' + j;
 
             rows = sql.excute(command + grade_cmd_string.favor);
@@ -313,25 +315,29 @@ function upward_calculate(who, year, quarter) {
 
             rows = sql.excute(command + grade_cmd_string.neural);
             neural_total = Number(rows[0].count);
-            
+                
             rows = sql.excute(command + grade_cmd_string.unfavor);
             unfavor_total = Number(rows[0].count);
 
             total = favor_total + neural_total + unfavor_total;
 
-            if(total == 0) {
-                continue;
+            if(total === 0) {
+                favor_percent = 0;
+                unfavor_percent = 0;
+                neural_percent = 0;
+            }
+            else {
+                favor_percent = Math.round(percentage(favor_total, total));
+                unfavor_percent = Math.round(percentage(unfavor_total, total));
+                neural_percent = 100 - favor_percent - unfavor_percent;
             }
 
-            favor_percent = Math.round(percentage(favor_total, total));
-            unfavor_percent = Math.round(percentage(unfavor_total, total));
-            neural_percent = 100 - favor_percent - unfavor_percent;
 
             rows = sql.excute('SELECT * FROM upward_result WHERE candidate=\'' +
                               candidate_name + '\' AND year=' + year + ' AND quarter=' +
                               quarter + ' AND grade_num='+ j + ' AND question_ver=' + question_list[0]);
             
-            if(rows.length == 0) {
+            if(rows.length === 0) {
                 command = 'INSERT INTO upward_result ' +
                           '(candidate, year, quarter, total, favorable, neutral, unfavorable, question_ver, grade_num) ';
                 command += 'VALUES (' + 

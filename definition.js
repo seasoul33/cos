@@ -16,6 +16,8 @@ let link_banner = {'basic': link_banner_basic,
                    'admin': link_banner_admin,
                    'logout': link_banner_logout};
 
+const nothing_grade_value = 99;
+
 let horizontal_grade_value = [-3,-1,0,1,3];
 let horizontal_grade_item = ['刻意逃避 / 忽略 / 拒絕',
                              '沒有幫忙 / 敷衍',
@@ -23,10 +25,11 @@ let horizontal_grade_item = ['刻意逃避 / 忽略 / 拒絕',
                              '有提供協助或意見',
                              '主動熱心積極'];
 
-let upward_grade_value = [-3,-1,0,1,3];
-let upward_grade_item = ['沒有做到 / 令人失望',
+let upward_grade_value = [nothing_grade_value,-3,-1,0,1,3];
+let upward_grade_item = ['沒有交集 / 不予評分',
+                         '沒有做到 / 令人失望',
                          '不太好',
-                         '沒有交集 / 不好不壞',
+                         '普通 / 不好不壞',
                          '還不錯',
                          '做得很棒'];
 // let upward_grade_item = ['沒有做到 / 令人失望',
@@ -38,6 +41,7 @@ let upward_grade_item = ['沒有做到 / 令人失望',
 let session_timeout = 3600000; // in ms
 
 exports.link_banner = link_banner;
+exports.nothing_grade_value = nothing_grade_value;
 exports.horizontal_grade_value = horizontal_grade_value;
 exports.horizontal_grade_item = horizontal_grade_item;
 exports.upward_grade_value = upward_grade_value;

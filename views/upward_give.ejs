@@ -62,20 +62,28 @@
             <table border="1" id="grade">
                 <tr class="title">
                     <td class="question_title">Question Version: <%= result[0] %></td>
-                    <td class="absolute_width"><%= grade_string[0] %></td>
-                    <td class="absolute_width"><%= grade_string[1] %></td>
-                    <td class="absolute_width"><%= grade_string[2] %></td>
-                    <td class="absolute_width"><%= grade_string[3] %></td>
-                    <td class="absolute_width"><%= grade_string[4] %></td>
+                    <% for(var i=0;i<grade_string.length;i++) { %>
+                        <td class="absolute_width"><%= grade_string[i] %></td>
+                        <% if(i==0) { %>
+                            <td class="absolute_width" style="empty-cells: hide"></td>
+                        <% }%>
+                    <% } %>
                 </tr>
                 <% for(var i=1;i<result.length;i++) { %>
                 <tr>
                     <td><%= result[i] %>:</td>
-                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[0] %>></td>
+                    <% for(var j=0;j<grade_value.length;j++) { %>
+                        <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[j] %><% if(j==0) { %> checked<% } %>></td>
+                        <% if(j==0) { %>
+                            <td style="empty-cells: hide"></td>
+                        <% }%>
+                    <% } %>
+                    <!-- <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[0] %>></td>
                     <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[1] %>></td>
                     <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[2] %> checked></td>
                     <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[3] %>></td>
                     <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[4] %>></td>
+                    <td><input type="radio" name="grade<%= i %>" value=<%= grade_value[5] %>></td> -->
                 </tr>
                 <% } %>
             </table>
