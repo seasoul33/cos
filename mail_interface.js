@@ -48,8 +48,8 @@ function inform(who, year, quarter) {
 		mailbody += '<tr><td><b>做得好的事情</b></td><td><b>可以改進的地方</b></td></tr>';
 		for(let j=0;j<comment.length;j++) {
 			mailbody += '<tr>';
-			mailbody += '<td align="right">' + comment[j].c1 + '</td>';
-			mailbody += '<td align="right">' + comment[j].c2 + '</td>';
+			mailbody += '<td align="left">' + comment[j].c1 + '</td>';
+			mailbody += '<td align="left">' + comment[j].c2 + '</td>';
 			mailbody += '</tr>';
 		}
 		mailbody += '</table></p>';
