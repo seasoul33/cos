@@ -31,7 +31,11 @@
                     <select name="year">
                         <!-- <option value="all">All</option> -->
                         <% for(let i=0;i<15;i++) { %>
-                            <option value="20<%= i+16 %>">20<%= i+16 %></option>
+                            <% if( (i+16) === year ) { %>
+                                <option value="20<%= i+16 %>" selected>20<%= i+16 %></option>
+                            <% } else { %>
+                                <option value="20<%= i+16 %>">20<%= i+16 %></option>
+                            <% } %>
                         <% } %>
                     </select>
                 </td>
@@ -39,7 +43,11 @@
                     <select name="quarter">
                         <!-- <option value="all">All</option> -->
                         <% for(let i=1;i<5;i++) { %>
-                            <option value="<%= i %>">Q<%= i %></option>
+                            <% if( i === quarter ) { %>
+                                <option value="<%= i %>" selected>Q<%= i %></option>
+                            <% } else { %>
+                                <option value="<%= i %>">Q<%= i %></option>
+                            <% } %>
                         <% } %>
                     </select>
                 </td>

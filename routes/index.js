@@ -5,6 +5,10 @@ let mail = require('../mail_interface');
 let definition = require('../definition');
 let usercontrol = require('../usercontrol');
 
+function getCurrentQuarter() {
+    return Math.floor(new Date().getMonth() / 3) + 1;
+}
+
 //----------------
 
 /* log out */
@@ -69,7 +73,9 @@ router.get('/horizontal_give', function(req, res, next) {
                  isAdmin: isAdmin,
                  isLeader: isLeader,
                  account: account.filter(x => x!=req.user.name), 
-                 link_banner: definition.link_banner, 
+                 link_banner: definition.link_banner,
+                 year: new Date().getFullYear(),
+                 quarter: getCurrentQuarter(),
                  grade_value: definition.horizontal_grade_value,
                  grade_string: definition.horizontal_grade_item
                });
@@ -125,6 +131,8 @@ router.get('/upward_give', function(req, res, next) {
                  isLeader: isLeader, 
                  account: account.filter(x => x!=req.user.name), 
                  link_banner: definition.link_banner,
+                 year: new Date().getFullYear(),
+                 quarter: getCurrentQuarter(),
                  grade_value: definition.upward_grade_value,
                  grade_string: definition.upward_grade_item
                });
@@ -239,13 +247,16 @@ router.get('/comment', function(req, res, next) {
     let account = usercontrol.getAccountnameList('leader', false);
     let isAdmin = usercontrol.isAdministrator(req.user);
     let isLeader = usercontrol.isLeader(req.user);
+    let quarter = Math.floor(new Date().getMonth() / 3) + 1;
     res.render('comment', 
                { title: '評語',
                  user: req.user,
                  isAdmin: isAdmin,  
                  account: account.filter(x => x!=req.user.name),
                  isLeader: isLeader, 
-                 link_banner: definition.link_banner
+                 link_banner: definition.link_banner,
+                 year: new Date().getFullYear(),
+                 quarter: getCurrentQuarter()
                });
 });
 /* POST comment page. */
@@ -324,7 +335,9 @@ router.get('/upward_calculate', function(req, res, next) {
                  isAdmin: isAdmin,
                  isLeader: isLeader,
                  account: account, 
-                 link_banner: definition.link_banner
+                 link_banner: definition.link_banner,
+                 year: new Date().getFullYear(),
+                 quarter: getCurrentQuarter()
                });
     }
 });
@@ -379,7 +392,9 @@ router.get('/upward_fullresult', function(req, res, next) {
                  isAdmin: isAdmin,
                  isLeader: isLeader,
                  account: account, 
-                 link_banner: definition.link_banner
+                 link_banner: definition.link_banner,
+                 year: new Date().getFullYear(),
+                 quarter: getCurrentQuarter(),
                });
 });
 /* POST upward_fullresult page. */
@@ -430,7 +445,9 @@ router.get('/upward_announce', function(req, res, next) {
                      isAdmin: isAdmin,
                      isLeader: isLeader,
                      account: account, 
-                     link_banner: definition.link_banner
+                     link_banner: definition.link_banner,
+                     year: new Date().getFullYear(),
+                     quarter: getCurrentQuarter(),
                    });
     }
 });

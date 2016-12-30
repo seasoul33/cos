@@ -20,6 +20,42 @@
             </p>
 
             <p>
+            請選擇評價時段：
+            <table border="1">
+            <tr>
+                <td align="right">年</td>
+                <td align="right">季</td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="year">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=0;i<15;i++) { %>
+                            <% if( (i+16) === year ) { %>
+                                <option value="20<%= i+16 %>" selected>20<%= i+16 %></option>
+                            <% } else { %>
+                                <option value="20<%= i+16 %>">20<%= i+16 %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </td>
+                <td>
+                    <select name="quarter">
+                        <!-- <option value="all">All</option> -->
+                        <% for(let i=1;i<5;i++) { %>
+                            <% if( i === quarter ) { %>
+                                <option value="<%= i %>" selected>Q<%= i %></option>
+                            <% } else { %>
+                                <option value="<%= i %>">Q<%= i %></option>
+                            <% } %>
+                        <% } %>
+                    </select>
+                </td>
+            </tr>
+            </table>
+            </p>
+
+            <p>
             <input type="hidden" name="provider" value="<%= user.name %>">
             <!-- 你的身份：
             <select name="provider">
