@@ -21,6 +21,7 @@ Inspired by the following person/organization:
 
 ##Getting Start...
 1. Install Postgresql(I use version 9.5.3).
-2. Replace the postgresql username/password with your own.
-3. Replace the username/password with your own to access smtp server.
-4. Insert question data into database.(table 'xxx_question')
+2. Create the DB by file 'postgres_schema'.
+3. Replace the postgresql username/password with your own.
+4. Replace the username/password with your own to access smtp server.
+5. Insert question data into database.(table 'xxx_question')
