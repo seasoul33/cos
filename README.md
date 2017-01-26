@@ -16,7 +16,7 @@ Inspired by the following person/organization:
 
 ##Planed to support:
 1. Horizontal grading to colleagues in the group.
-2. Topics forum(Please see my another repository *WantedBoard*)
+2. Topics forum(Please see my another repository [*Mirror*](https://github.com/seasoul33/Mirror))
 3. Any thing help to build the circle of safety.
 
 ##Getting Start...
