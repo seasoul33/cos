@@ -49,7 +49,7 @@ function toggle(option) {
                     <select name="year">
                         <!-- <option value="all">All</option> -->
                         <% for(let i=0;i<15;i++) { %>
-                            <% if( (i+16) === year ) { %>
+                            <% if( (i+2016) === year ) { %>
                                 <option value="20<%= i+16 %>" selected>20<%= i+16 %></option>
                             <% } else { %>
                                 <option value="20<%= i+16 %>">20<%= i+16 %></option>
