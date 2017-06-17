@@ -13,6 +13,7 @@ var authen = require('./authen');
 var cookieSession = require('cookie-session');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
+var LdapStrategy = require('passport-ldapauth');
 
 var app = express();
 
@@ -41,18 +42,33 @@ passport.deserializeUser(function(user, done) {
     done(null, user);
 });
 passport.use(new localStrategy(authen.verify));
+passport.use(new LdapStrategy({
+    server: {
+        url: 'ldap://192.168.1.100',
+        bindDn: 'cn=admin,dc=my-domain,dc=com',
+        bindCredentials: 'hit68758965',
+        searchBase: 'ou=people,dc=my-domain,dc=com',
+        searchFilter: '(uid={{username}})'
+    }})
+);
 
 app.post('/login',
-    passport.authenticate('local', { session: true,
+    passport.authenticate(['ldapauth','local'], { session: true,
                                     //successRedirect: '/index',
                                     // failureRedirect: '/',
                                     failWithError: true}),
     function(req, res, next) {
         req.session.passport.flag = 1;
         req.session.passport.starttime = Date.now();
+
+        // sync user data from LDAP to local if necessary in the future
+
         res.redirect('/index');
     },
     function(err, req, res, next) {
+
+        // handle error message
+
         res.render('login', { title: 'Login to Circle of Safety',
                               ErrMsg: 'Username/Password incorrect...'
                             });
