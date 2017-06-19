@@ -113,6 +113,11 @@ function account_modify(data) {
     command += 'WHERE name = \'' + data.oldname + '\'';
 
     sql.excute(command);
+	
+    command = 'provider = \'' + data.name + '\' ' + 'WHERE provider = \'' + data.oldname + '\'';
+    sql.excute('UPDATE comment SET ' + command);
+    sql.excute('UPDATE horizontal_grade SET ' + command);
+    sql.excute('UPDATE upward_grade SET ' + command);
 
     return true; // should do error handling
 }
