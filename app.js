@@ -44,10 +44,10 @@ passport.deserializeUser(function(user, done) {
 passport.use(new localStrategy(authen.verify));
 passport.use(new LdapStrategy({
     server: {
-        url: 'ldap://192.168.1.100',
-        bindDn: 'cn=admin,dc=my-domain,dc=com',
-        bindCredentials: 'hit68758965',
-        searchBase: 'ou=people,dc=my-domain,dc=com',
+        url: 'ldap://your LDAP server IP',
+        bindDn: 'Your LDAP root dn', // eg. 'cn=xxx,dc=xxdomain,dc=org'
+        bindCredentials: 'Your LDAP root password',
+        searchBase: 'Tour tree to search', // e.g. 'ou=people,dc=xxdomain,dc=org'
         searchFilter: '(uid={{username}})'
     }})
 );
