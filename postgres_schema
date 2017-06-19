@@ -188,7 +188,8 @@ ALTER TABLE ONLY account
 --
 
 ALTER TABLE ONLY comment
-    ADD CONSTRAINT comment_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name);
+    DROP CONSTRAINT comment_candidate_fkey,
+    ADD CONSTRAINT comment_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name) ON UPDATE CASCADE;
 
 
 --
@@ -196,7 +197,8 @@ ALTER TABLE ONLY comment
 --
 
 ALTER TABLE ONLY horizontal_grade
-    ADD CONSTRAINT each_other_grade_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name);
+    DROP CONSTRAINT each_other_grade_candidate_fkey,
+    ADD CONSTRAINT each_other_grade_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name) ON UPDATE CASCADE;
 
 
 --
@@ -204,7 +206,8 @@ ALTER TABLE ONLY horizontal_grade
 --
 
 ALTER TABLE ONLY horizontal_result
-    ADD CONSTRAINT each_other_result_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name);
+    DROP CONSTRAINT each_other_result_candidate_fkey,
+    ADD CONSTRAINT each_other_result_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name) ON UPDATE CASCADE;
 
 
 --
@@ -212,7 +215,8 @@ ALTER TABLE ONLY horizontal_result
 --
 
 ALTER TABLE ONLY upward_grade
-    ADD CONSTRAINT upward_grade_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name);
+    DROP CONSTRAINT upward_grade_candidate_fkey,
+    ADD CONSTRAINT upward_grade_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name) ON UPDATE CASCADE;
 
 
 --
@@ -220,7 +224,8 @@ ALTER TABLE ONLY upward_grade
 --
 
 ALTER TABLE ONLY upward_result
-    ADD CONSTRAINT upward_result_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name);
+    DROP CONSTRAINT upward_result_candidate_fkey,
+    ADD CONSTRAINT upward_result_candidate_fkey FOREIGN KEY (candidate) REFERENCES account(name) ON UPDATE CASCADE;
 
 
 --
