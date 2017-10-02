@@ -62,6 +62,12 @@ app.post('/login',
         req.session.passport.starttime = Date.now();
 
         // sync user data from LDAP to local if necessary in the future
+        
+        // LDAP use 'uid', local use 'name', add name which will be used in later operations
+        if(!req.user.name) {
+            req.user.name = req.user.uid;
+        }
+
 
         res.redirect('/index');
     },
